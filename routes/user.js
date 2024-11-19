@@ -18,7 +18,7 @@ router.post('/signup', (req, res) => {
 });
 
 router.post('/signin', (req, res) => {
-    const username = req.body.username;
+    const username = req.body.email;
     const password = req.body.password;
     User.findOne({
         username: username,
