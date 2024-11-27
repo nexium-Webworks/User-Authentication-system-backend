@@ -86,6 +86,7 @@ class LoginController   {
           return res.status(500).json({ message: "An error occurred while fetching the profile." });
         }
       };
+      
 }
 
 export default new LoginController();
