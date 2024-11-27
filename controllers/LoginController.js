@@ -54,7 +54,38 @@ class LoginController   {
         }
     };
 
+    profile = async (req, res) => {
+        try {
+          // Extract token from the authorization header
+          const token = req.headers.authorization?.split(' ')[1]; // "Bearer <token>"
     
+          if (!token) {
+            return res.status(403).json({ message: "Token is required." });
+          }
+    
+          // Verify the token
+          const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+          // Fetch user data using the decoded user id
+          const user = await Users.findById(decoded.id);
+    
+          if (!user) {
+            return res.status(404).json({ message: "User not found." });
+          }
+    
+          // Respond with user data
+          return res.status(200).json({
+            message: "User profile fetched successfully.",
+            user: {
+              id: user._id,
+              username: user.username,
+            },
+          });
+        } catch (error) {
+          console.error("Error fetching profile:", error);
+          return res.status(500).json({ message: "An error occurred while fetching the profile." });
+        }
+      };
 }
 
 export default new LoginController();
